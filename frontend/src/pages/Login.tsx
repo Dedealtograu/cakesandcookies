@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Input from "../components/Input";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Button from "../components/Button";
+import { UserContext } from "../contexts/UserContext";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,21 +24,35 @@ const Login = () => {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
       if (response.status === 404) {
         setError("Usuário não encontrado");
+        return;
       }
 
       if (response.status === 400) {
         setError("Usuário e senha são obrigatórios");
+        return;
+      }
+
+      if (response.status === 401) {
+        setError("Credenciais inválidas");
+        return;
+      }
+
+      if (response.status === 500) {
+        setError("Erro interno do servidor");
+        return;
       }
 
       if (response.status === 200) {
         setError("");
         const data = await response.json();
-        console.log(data);
+        setUser(data);
+        navigate("/");
       }
     } catch (erro) {
       console.error(erro);
