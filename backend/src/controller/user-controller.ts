@@ -30,9 +30,9 @@ export const login = async (req: Request, res: Response) => {
 
     const { password: _, ...userWithoutPassword } = user;
 
-    const token = jwt.sign({ userWithoutPassword }, process.env.JWT_SECRET!);
+    const token = jwt.sign(userWithoutPassword, process.env.JWT_SECRET!);
 
-    res.cookie("user", token, { maxAge: 30 * 1000 });
+    res.cookie("user", token, { maxAge: 18000000 });
 
     res.status(200).json(userWithoutPassword);
   } catch (error) {
@@ -65,5 +65,25 @@ export const register = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ message: "Erro interno do servidor" });
     return;
+  }
+};
+
+export const auth = async (req: Request, res: Response) => {
+  try {
+    const { user } = req;
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Erro interno do servidor" });
+    return;
+  }
+};
+
+export const logout = (req: Request, res: Response) => {
+  const { user } = req.cookies;
+
+  if (user) {
+    res.clearCookie("user");
+    res.json({ message: "Logout bem-sucedido" });
   }
 };

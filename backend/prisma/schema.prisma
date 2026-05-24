@@ -13,4 +13,15 @@ model User {
   name      String
   password  String
   cep       String
+  admin     Boolean  @default(false)
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Decimal  @default(0)
+  image       String
+  category    String
+  createdAt   DateTime @default(now())
 }
