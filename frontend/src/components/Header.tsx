@@ -1,9 +1,11 @@
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../contexts/UserContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LogOut, ShoppingCart, Box, LayoutDashboard, Plus } from "lucide-react";
+import Cart from "./Cart";
 
 const Header = () => {
+  const [showCart, setShowCart] = useState<boolean>(false);
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
 
@@ -61,6 +63,7 @@ const Header = () => {
 
   return (
     <div className="bg-[#161410]">
+      {showCart && <Cart setShowCart={setShowCart} showCart={showCart} />}
       <div className="mx-auto flex w-full items-center justify-between p-3 md:w-212.5 md:p-0">
         <Link to="/">
           <img src="/logo.png" alt="" />
@@ -79,13 +82,13 @@ const Header = () => {
                     <LayoutDashboard size={20} />
                   </div>
                 </Link>
-                <div className="flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-md border-1">
+                <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
                   <Plus size={20} />
                 </div>
               </div>
             )}
             <div className="relative cursor-pointer">
-              <ShoppingCart size={20} />
+              <ShoppingCart size={20} onClick={() => setShowCart(!showCart)} />
               <span className="absolute -top-4.5 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#F2DAAC] text-xs font-bold text-[#161410]">
                 1
               </span>

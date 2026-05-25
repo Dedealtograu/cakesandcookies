@@ -32,7 +32,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
       res.status(400).json({ message: "ID do produto não fornecido" });
       return;
     }
-    const deletedProduct = await prisma.product.delete({ where: { id: id } });
+
+    const idString = id as string;
+    const deletedProduct = await prisma.product.delete({ where: { id: idString } });
 
     if (!deletedProduct) {
       res.status(404).json({ message: "Produto não encontrado" });
