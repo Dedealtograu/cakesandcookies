@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../contexts/UserContext";
+import { CartItemsContext } from "../contexts/CartItemsContext";
 import { useContext, useEffect, useState } from "react";
 import { LogOut, ShoppingCart, Box, LayoutDashboard, Plus } from "lucide-react";
 import Cart from "./Cart";
@@ -7,6 +8,7 @@ import Cart from "./Cart";
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);
   const { user, setUser } = useContext(UserContext);
+  const { cartItems } = useContext(CartItemsContext);
   const location = useLocation();
 
   const handleAuthUser = async () => {
@@ -90,7 +92,7 @@ const Header = () => {
             <div className="relative cursor-pointer">
               <ShoppingCart size={20} onClick={() => setShowCart(!showCart)} />
               <span className="absolute -top-4.5 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#F2DAAC] text-xs font-bold text-[#161410]">
-                1
+                {cartItems.length}
               </span>
             </div>
             <div className="flex items-center gap-2">

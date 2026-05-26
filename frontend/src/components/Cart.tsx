@@ -1,8 +1,9 @@
 import { X } from "lucide-react";
 import Button from "./Button";
 import CartItem from "./CartItem";
-import { useEffect, useState } from "react";
-import type { CartItemType } from "../types/CartItem";
+import { useEffect } from "react";
+import { CartItemsContext } from "../contexts/CartItemsContext";
+import { useContext } from "react";
 
 type CartTypeProps = {
   setShowCart: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,7 +11,7 @@ type CartTypeProps = {
 };
 
 const Cart = ({ setShowCart, showCart }: CartTypeProps) => {
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const { cartItems, setCartItems } = useContext(CartItemsContext);
 
   const getCartItems = async () => {
     try {
