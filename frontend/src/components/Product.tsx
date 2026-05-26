@@ -10,7 +10,6 @@ const Product = ({
   description,
   price,
   image,
-  category, // eslint-disable-line
   setProducts,
 }: ProductType) => {
   const { user } = useContext(UserContext);
@@ -45,7 +44,9 @@ const Product = ({
     try {
       const response = await fetch("http://localhost:3000/get-products");
       const data = await response.json();
-      setProducts(data);
+      if (setProducts) {
+        setProducts(data);
+      }
     } catch (error) {
       console.log(error);
       return;
